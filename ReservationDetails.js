@@ -4,21 +4,20 @@ import { useNavigation } from "@react-navigation/native";
 
 const ReservationDetails = ({ route: { params } }) => {
   const navigation = useNavigation();
-  const hour = params["time"];
+  const time = params["time"];
   const date = params["date"];
-  const id = params["packageId"];
+  const chosenPackage = params["package"];
   const place = params["place"];
-  const details = params["details"];
-  const packageName = params["package"];
+  console.log(chosenPackage)
 
   const reservationDetails = () => {
     const formattedDate = `${date.split("-")[2]}-${date.split("-")[1]}-${date.split("-")[0]}`;
     axios
       .post("http://localhost:8000/api/reservations", {
         customer_id: 1,
-        package_id: id,
+        package_id: chosenPackage.id,
         date: formattedDate,
-        time: hour,
+        time: time,
       })
       .then(function (response) {
         console.log(response);
@@ -33,18 +32,20 @@ const ReservationDetails = ({ route: { params } }) => {
     <View style={styles.container}>
       <Text style={styles.heading}>Reservation Details:</Text>
       <View style={styles.detailsContainer}>
-        <Text style={styles.placeName}>{place}</Text>
+        <Text style={styles.placeName}>{place.name}</Text>
         <Text style={styles.title}>Package Name:</Text>
-        <Text style={styles.details}>{packageName}</Text>
+        <Text style={styles.details}>{chosenPackage.title}</Text>
         <Text style={styles.title}>Package Details:</Text>
-        <Text style={styles.details}>{details}</Text>
+        <Text style={styles.details}>{chosenPackage.details}</Text>
         <Text style={styles.title}>Date:</Text>
         <Text style={styles.details}>{date}</Text>
         <Text style={styles.title}>Time:</Text>
-        <Text style={styles.details}>{hour}</Text>
+        <Text style={styles.details}>{time.time}</Text>
       </View>
       <TouchableOpacity style={styles.button} onPress={reservationDetails}>
-        <Text style={{ fontSize: 16, fontWeight: "600", color: "#fff" }}>Confirm</Text>
+        <Text style={{ fontSize: 16, fontWeight: "600", color: "#fff" }}>
+          Confirm
+        </Text>
       </TouchableOpacity>
     </View>
   );

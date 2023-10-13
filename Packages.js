@@ -4,14 +4,13 @@ import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 
 const Packages = ({ route: { params } }) => {
+  const place = params["chosenPlace"];
   const navigation = useNavigation();
-  const id = params["placeId"];
-  const name = params["placeName"];
   const [packages, setPackages] = useState();
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/packages/${id}`)
+      .get(`http://localhost:8000/api/packages/${place.id}`)
       .then(function (response) {
         setPackages(response.data);
       })
@@ -29,10 +28,11 @@ const Packages = ({ route: { params } }) => {
         <Text style={styles.price}>{item.price} SAR</Text>
         <TouchableOpacity
           style={styles.button}
-          onPress={() =>
-            navigation.navigate("ReservationDate", {
-              packageId: item.id, packageName: item.title, placeName: name, details: item.details,})}
-          underlayColor="#fff">
+          onPress={() => {
+            navigation.navigate("ReservationDate", {chosenPackage: item, chosenPlace: place});
+          }}
+          underlayColor="#fff"
+        >
           <Text style={styles.buttonText}>Buy Now</Text>
         </TouchableOpacity>
       </View>

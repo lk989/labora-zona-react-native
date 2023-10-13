@@ -5,11 +5,10 @@ import CalendarPicker from "react-native-calendar-picker";
 import { now } from "moment";
 
 const ReservationDate = ({ route: { params } }) => {
+  const place = params['chosenPlace'];
+  const chosenPackage = params['chosenPackage'];
+  
   const navigation = useNavigation();
-  const name = params['packageName'];
-  const place = params['placeName'];
-  const details = params['details'];
-  const id = params["packageId"];
   const [date, setDate] = useState(new Date(now).toLocaleDateString("es-CL"));
   const time = [
     { id: 1, time: "09:00" }, { id: 2, time: "10:00" }, { id: 3, time: "11:00" },
@@ -26,7 +25,8 @@ const ReservationDate = ({ route: { params } }) => {
   const maxDate = new Date();
   maxDate.setMonth(maxDate.getMonth() + 1);
   const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => navigation.navigate('ReservationDetails', {time: item.time, package: name, date: date, place: place, details: details, packageId: id})}>
+    <TouchableOpacity onPress={() => navigation.navigate('ReservationDetails',
+      { time: item, package: chosenPackage, date: date, place: place })}>
       <View style={styles.time}>
         <Text style={styles.hour}>{item.time}</Text>
       </View>

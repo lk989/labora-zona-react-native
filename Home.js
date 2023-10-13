@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View, Text, Image, FlatList, TouchableOpacity } from "react-native";
-import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+
 
 const Home = () => {
   //screen navigation object
@@ -13,7 +14,7 @@ const Home = () => {
   // Make a request for all the places
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/places")
+      .get(`http://localhost:8000/api/places`)
       .then(function (response) {
         setPlaces(response.data);
       })
@@ -24,9 +25,9 @@ const Home = () => {
   }, []);
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity onPress={() => 
-      navigation.navigate("Packages", { placeId: item.id, placeName: item.name })
-    }>
+    <TouchableOpacity onPress={() => {
+      navigation.navigate("Packages", {chosenPlace: item});
+    }}>
       <View style={styles.placeContainer}>
         <Text style={styles.placeName}>{item.name}</Text>
         <View style={styles.placeDetails}>
